@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  app.use('/', (req: Request, res: Response) => res.send('Bluesky'))
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
     .setTitle('Bluesky Project')
