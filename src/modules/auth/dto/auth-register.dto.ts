@@ -21,7 +21,7 @@ export class AuthRegisterDto {
     @ApiProperty({default: 'johndoe123'})
     password: string
 
-    @Type(() => Date)
+    @Type(() => String)
     @IsDateString()
     @ApiProperty({default: '1990-01-01'})
     birthDate: string

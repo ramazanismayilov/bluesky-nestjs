@@ -6,6 +6,7 @@ import { AuthController } from './modules/auth/auth.controller';
 import config from './config';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { JwtModule } from '@nestjs/jwt';
       secret: config.jwtSecret || 'defaultSecretKey',
       signOptions: { expiresIn: '1d' },
     }),
-    AuthModule
+    AuthModule,
+    UserModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
