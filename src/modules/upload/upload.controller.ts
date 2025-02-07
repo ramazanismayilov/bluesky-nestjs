@@ -1,9 +1,8 @@
 import { BadRequestException, Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthGuard } from "src/guards/auth.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage, memoryStorage } from "multer";
-import { extname, join } from "path";
-import * as crypto from 'crypto'
+import { memoryStorage } from "multer";
+import { extname } from "path";
 import { ALLOWED_IMAGE_EXTENSIONS, ALLOWED_IMAGE_MIME_TYPES } from "./upload.types";
 import { ApiBearerAuth, ApiBody, ApiConsumes } from "@nestjs/swagger";
 import { FileUploadDto } from "./dto/upload-file.dto";
