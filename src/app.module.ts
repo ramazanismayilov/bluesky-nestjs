@@ -7,6 +7,9 @@ import config from './config';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './modules/user/user.module';
+import { UploadModule } from './modules/upload/upload.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,8 +25,13 @@ import { UserModule } from './modules/user/user.module';
       secret: config.jwtSecret || 'defaultSecretKey',
       signOptions: { expiresIn: '1d' },
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../uploads'),
+      serveRoot: '/uploads/'
+    }),
     AuthModule,
-    UserModule
+    UserModule,
+    UploadModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
