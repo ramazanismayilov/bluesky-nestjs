@@ -1,5 +1,6 @@
 import { hash } from "bcrypt";
-import { BaseEntity, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UploadEntity } from "./Upload.entiry";
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -17,6 +18,10 @@ export class UserEntity extends BaseEntity {
 
     @Column()
     birthDate: Date
+
+    @OneToOne(() => UploadEntity, { nullable: true })
+    @JoinColumn()
+    profilePicture: UploadEntity;
 
     @CreateDateColumn()
     createdAt: Date;

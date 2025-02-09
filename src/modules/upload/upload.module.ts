@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { UploadController } from "./upload.controller";
-import { CloudinaryModule } from "src/libs/cloudinary/cloudinary.module";
 import { UploadService } from "./upload.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UploadEntity } from "src/entities/Upload.entiry";
 
 @Module({
-    imports: [CloudinaryModule],
+    imports: [TypeOrmModule.forFeature([UploadEntity])],
     controllers: [UploadController],
     providers: [UploadService]
 })

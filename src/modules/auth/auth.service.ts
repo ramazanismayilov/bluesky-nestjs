@@ -7,12 +7,16 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { compare } from 'bcrypt';
 import config from 'src/config';
+import { UploadEntity } from 'src/entities/Upload.entiry';
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectRepository(UserEntity)
-    private userRepo: Repository<UserEntity>,
-        private jwtService: JwtService
+    constructor(
+        private jwtService: JwtService,
+        @InjectRepository(UserEntity)
+        private userRepo: Repository<UserEntity>,
+        @InjectRepository(UploadEntity)
+        private uploadRepo: Repository<UploadEntity>,
     ) { }
 
     async login(params: AuthLoginDto) {
@@ -56,19 +60,28 @@ export class AuthService {
     async register(params: AuthRegisterDto) {
         let checkUsername = await this.userRepo.exists({
             where: { username: params.username }
-        })
-        if (checkUsername) throw new ConflictException("Username is already exists")
+        });
+        if (checkUsername) throw new ConflictException("Username is already exists");
 
         let checkEmail = await this.userRepo.exists({
             where: { email: params.email }
-        })
-        if (checkEmail) throw new ConflictException("Email is already exists")
+        });
+        if (checkEmail) throw new ConflictException("Email is already exists");
 
-        let user = this.userRepo.create(params)
-        await user.save()
+        let user = this.userRepo.create(params);
+
+        if (params.profilePictureId) {
+            const profilePicture = await this.uploadRepo.findOne({
+                where: { id: params.profilePictureId }
+            });
+            if (!profilePicture) throw new NotFoundException("Profile picture not found");
+            user.profilePicture = profilePicture;
+        }
+
+        await user.save();
         return {
             message: "Registration is successfully",
             user
-        }
+        };
     }
 } 
